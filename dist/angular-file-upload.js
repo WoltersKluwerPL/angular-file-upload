@@ -1144,6 +1144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var isInput = isElement(some);
 	            var input = isInput ? element(some) : null;
 	            var file = !isInput ? some : null;
+                var scope = uploader.inputScope;
 	
 	            extend(this, {
 	                url: uploader.url,
@@ -1168,7 +1169,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                _input: input
 	            });
 	
-	            if (input) this._replaceNode(input);
+	            if (input) this._replaceNode(input, scope);
 	        }
 	
 	        _createClass(FileItem, {
@@ -1402,8 +1403,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                 * @private
 	                 */
 	
-	                value: function _replaceNode(input) {
-	                    var clone = $compile(input.clone())(input.scope());
+	                value: function _replaceNode(input, scope) {
+	                    var clone = $compile(input.clone())(scope);
 	                    clone.prop("value", null); // FF fix
 	                    input.css("display", "none");
 	                    input.after(clone); // remove jquery dependency
@@ -1905,7 +1906,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (!(uploader instanceof FileUploader)) {
 	                throw new TypeError("\"Uploader\" must be an instance of FileUploader");
 	            }
-	
+
+                uploader.inputScope = scope;
 	            var object = new FileSelect({
 	                uploader: uploader,
 	                element: element
